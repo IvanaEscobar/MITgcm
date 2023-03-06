@@ -491,6 +491,8 @@ be used (e.g. 1000 dbar, 2000 dbar).
   +---------------------+----------------------------------+------------------+
   | ``m_boxmean_shihf`` | total shelfice heat flux over box| specify box      |
   +---------------------+----------------------------------+------------------+
+  | ``m_boxmean_vol``   | total volume over box            | specify box      |
+  +---------------------+----------------------------------+------------------+  
   | ``m_horflux_vol``   | volume transport through section | specify transect |
   +---------------------+----------------------------------+------------------+
 
@@ -852,6 +854,10 @@ the resulting new control vector to the model grid unless CPP-flag
   |                    | ``xx_depth``          | bottom topography              |
   |                    |                       | requires to define             |
   |                    |                       | :varlink:`ALLOW_DEPTH_CONTROL` |
+  +--------------------+-----------------------+--------------------------------+
+  |                    | ``xx_siheff``         | initial sea ice thickness      |
+  +--------------------+-----------------------+--------------------------------+
+  |                    | ``xx_siarea``         | initial sea ice area           |
   +--------------------+-----------------------+--------------------------------+
   | 3D, time-invariant | ``genarr3d``          |                                |
   | controls           |                       |                                |
