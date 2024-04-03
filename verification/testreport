@@ -22,6 +22,7 @@ usage()
     echo "                            DEF='mitgcmuv' or ='mpirun -np TR_NPROC mitgcmuv'"
     echo " ---- testing options : ----"
     echo "  (-optfile|-of) STRING    optfile to use"
+    echo "  (-adoptfile|-adof) STRING adoptfile to use"
     echo "  (-fast)                  use optfile default for compiler flags (no '-ieee')"
     echo "                            DEF=off => use IEEE numerics option (if available)"
     echo "  (-devel)                 use optfile developement flags (if available)"
@@ -404,6 +405,9 @@ genmakemodel()
 	    fi
 	    if test "x$OPTFILE" != xNONE ; then
 		command="$command -optfile=$OPTFILE"
+	    fi
+	    if test "x$ADOPTFILE" != xNONE ; then
+		command="$command -adoptfile=$ADOPTFILE"
 	    fi
 	    if test $OptLev = 1 ; then
 		command="$command -ieee"
@@ -1114,6 +1118,7 @@ POSTCLEAN=0
 
 BASH=
 OPTFILE=NONE
+ADOPTFILE=NONE
 ADDRESSES=
 TESTDIRS=
 SKIPDIRS=
@@ -1176,6 +1181,9 @@ for ac_option ; do
 
 	-optfile | --optfile | -of | --of) ac_prev=OPTFILE ;;
 	-optfile=* | --optfile=* | -of=* | --of=*) OPTFILE=$ac_optarg ;;
+
+	-adoptfile | --adoptfile | -adof | --adof) ac_prev=ADOPTFILE ;;
+	-adoptfile=* | --adoptfile=* | -adof=* | --adof=*) ADOPTFILE=$ac_optarg ;;
 
 	-addr | --addr | -a | --a) ac_prev=ADDRESSES ;;
 	-addr=* | --addr=* | -a=* | --a=*) ADDRESSES=$ac_optarg ;;
@@ -1535,6 +1543,32 @@ if test "x$OPTFILE" != xNONE ; then
 else
     echo >> $SUMMARY
     echo "No \"OPTFILE\" was specified ; genmake2 found and uses:" >> $SUMMARY
+    #-note: to be filled later after 1rst run
+fi
+echo
+adof_path=
+if test "x$ADOPTFILE" != xNONE ; then
+    if test -r $ADOPTFILE ; then
+	# get the path
+	path=${ADOPTFILE%/*}
+	if test "x$path" = x ; then
+	    adof_path=`pwd`
+	else
+	    adof_path=`( cd $path > /dev/null 2>&1 ; pwd )`
+	fi
+	file=${ADOPTFILE##*/}
+	ADOPTFILE=$adof_path/$file
+	cp $ADOPTFILE $DRESULTS
+	echo >> $SUMMARY
+	echo "  ADOPTFILE=$ADOPTFILE" >> $SUMMARY
+    else
+	echo | tee -a $SUMMARY
+	echo "ERROR: can't read ADOPTFILE=\"$ADOPTFILE\"" | tee -a $SUMMARY
+	exit 1
+    fi
+else
+    echo >> $SUMMARY
+    echo "No \"ADOPTFILE\" was specified ; genmake2 found and uses:" >> $SUMMARY
     #-note: to be filled later after 1rst run
 fi
 echo
