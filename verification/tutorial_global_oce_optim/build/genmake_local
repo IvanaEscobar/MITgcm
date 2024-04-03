@@ -1,0 +1,13 @@
+#-- This is the local options file for the "new" version of genmake
+
+if [ "$FC" = "gfortran" ]; then
+    FFLAGS="$FFLAGS -ffixed-line-length-132"
+    F90FLAGS="$F90FLAGS -ffree-line-length-132"
+else
+    FFLAGS="$FFLAGS -132"
+    F90FLAGS="$F90FLAGS -132"
+fi
+
+TAF_FORTRAN_VERS='F95'
+TAF_COMMON_FLAGS="-e $TAF_COMMON_FLAGS"
+
