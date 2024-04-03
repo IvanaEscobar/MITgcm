@@ -1546,6 +1546,7 @@ else
     #-note: to be filled later after 1rst run
 fi
 echo
+if test $KIND = 2; then
 adof_path=
 if test "x$ADOPTFILE" != xNONE ; then
     if test -r $ADOPTFILE ; then
@@ -1568,8 +1569,8 @@ if test "x$ADOPTFILE" != xNONE ; then
     fi
 else
     echo >> $SUMMARY
-    echo "No \"ADOPTFILE\" was specified ; genmake2 found and uses:" >> $SUMMARY
-    #-note: to be filled later after 1rst run
+    echo "No \"ADOPTFILE\" was specified ; genmake2 uses none" >> $SUMMARY
+fi
 fi
 echo
 echo >> $SUMMARY
