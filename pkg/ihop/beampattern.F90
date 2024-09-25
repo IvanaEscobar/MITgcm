@@ -1,1 +1,0 @@
-/Users/ivana/work/ihop/src/beampattern.F90
