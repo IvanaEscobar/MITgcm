@@ -1,22 +1,22 @@
-CBOP
-C     !ROUTINE: CTRL_SIZE.h
-C     !INTERFACE:
-C     #include "CTRL_SIZE.h"
+!BOP
+!     !ROUTINE: CTRL_SIZE.h
+!     !INTERFACE:
+!     #include "CTRL_SIZE.h"
 
-C     !DESCRIPTION:
-C     *================================================================*
-C     | CTRL_SIZE.h
-C     | o set maximum number of control variables
-C     *================================================================*
-CEOP
+!     !DESCRIPTION:
+!     *================================================================*
+!     | CTRL_SIZE.h
+!     | o set maximum number of control variables
+!     *================================================================*
+!EOP
 
-C     Generic control variable array dimension
-C     ----------------------------------------
-C
-C     maxCtrlArr2D :: number of 2-D generic init. ctrl variables
-C     maxCtrlArr3D :: number of 3-D generic init. ctrl variables
-C     maxCtrlTim2D :: number of 2-D generic time-varying ctrl variables
-C     maxCtrlProc  :: number of pre-processing options per ctrl variable
+!     Generic control variable array dimension
+!     ----------------------------------------
+!
+!     maxCtrlArr2D :: number of 2-D generic init. ctrl variables
+!     maxCtrlArr3D :: number of 3-D generic init. ctrl variables
+!     maxCtrlTim2D :: number of 2-D generic time-varying ctrl variables
+!     maxCtrlProc  :: number of pre-processing options per ctrl variable
 
       INTEGER     maxCtrlArr2D
       PARAMETER ( maxCtrlArr2D = 1 )
@@ -30,4 +30,4 @@ C     maxCtrlProc  :: number of pre-processing options per ctrl variable
       INTEGER     maxCtrlProc
       PARAMETER ( maxCtrlProc = 1 )
 
-C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
+!---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
