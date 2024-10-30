@@ -9,6 +9,7 @@
  nend             = 3,
 # testing dpH/dALK
  grdchkvarname    = "xx_ptr2",
+ grdchkvarname    = "xx_theta",
  iGloPos  =34,
  jGloPos  =10,
  kGloPos  =1,
