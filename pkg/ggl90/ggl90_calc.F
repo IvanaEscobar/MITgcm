@@ -584,7 +584,7 @@ C     compute Prandtl number (always greater than 1)
        ENDIF
 #endif /* ALLOW_GGL90_IDEMIX */
 #ifdef ALLOW_AUTODIFF_TAMC
-CADJ STORE TKEPrandtlNumber(:,:,k)=comlev1_bibj_k,key=kkey,kind=isbyte
+CADJ STORE TKEPrandtlNumber(:,:,k)=comlev1_bibj_k,key=kkey
 #endif /* ALLOW_AUTODIFF_TAMC */
 
        DO j=jMin,jMax
