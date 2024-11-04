@@ -522,7 +522,7 @@ C end of #ifndef ALLOW_PROFILES_SAMPLESPLIT_COST
      &      ProfNo(num_file,bi,bj),num_var
            call print_message(
      &      msgbuf, standardMessageUnit, SQUEEZE_RIGHT , myThid)
-           write(msgbuf,'(a,D22.15,D22.15)')
+           write(msgbuf,'(a,2D22.15)')
      &      prof_names(num_file,num_var),
      &      objf_profiles(num_file,num_var,bi,bj),
      &      num_profiles(num_file,num_var,bi,bj)
@@ -592,7 +592,7 @@ C        if (ProfNo(num_file,bi,bj).GT.0) then
            call print_message(
      &      msgbuf, standardMessageUnit, SQUEEZE_RIGHT , myThid)
 
-           write(msgbuf,'(a,a5,D22.15,D22.15)') prof_names(1,num_var),
+           write(msgbuf,'(a,a5,2D22.15)') prof_names(1,num_var),
      &      '_mean',
      &      objf_profiles_mean(num_var,bi,bj),
      &      num_profiles_mean(num_var,bi,bj)
@@ -629,7 +629,7 @@ c
       CALL GLOBAL_SUM_TILE_RL( objf_prof_tile, objf_prof_glo, myThid )
       CALL GLOBAL_SUM_TILE_RL( num_prof_tile, num_prof_glo, myThid )
 c
-      write(msgbuf,'(a,I2,a,I2,a,2D12.5)')
+      write(msgbuf,'(2(a,I2),a,2D22.15)')
      &  ' cost_profiles(',num_file,',',num_var,')= ',
      &  objf_prof_glo,num_prof_glo
 
@@ -656,7 +656,7 @@ c
       CALL GLOBAL_SUM_TILE_RL( num_prof_mean_tile,
      &     num_prof_mean_glo, myThid )
 c
-      write(msgbuf,'(a,I2,a,2D12.5)')
+      write(msgbuf,'(a,I2,a,2D22.15)')
      &  ' cost_profiles_mean(',num_var,')= ',
      &  objf_prof_mean_glo,num_prof_mean_glo
 
