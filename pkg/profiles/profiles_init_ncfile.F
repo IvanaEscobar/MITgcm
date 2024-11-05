@@ -23,7 +23,7 @@ C ==================== Global Variables ===========================
 # include "netcdf.inc"
 #endif
 C ==================== Routine Variables ==========================
-      integer fid1,fid2,dimid1,dimid2,varid(10),varid0
+      integer fid1,fid2,dimid1,dimid2,varid(2*NVARMAX),varid0
       integer myThid,bi,bj,err,vecid(2), length, Zlength
       character*(MAX_LEN_FNAM) file2
       integer irec, num_var,num_file
