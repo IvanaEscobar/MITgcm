@@ -178,19 +178,67 @@ C===========================================================
 
       WRITE(fnamedatanc,'(2a)') profilesfile(1:IL),'.nc'
       err = NF_OPEN(fnamedatanc, 0, fiddata(num_file,bi,bj))
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed 1:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
 
 c1)  read the number of profiles :
       fid=fiddata(num_file,bi,bj)
       err = NF_INQ_DIMID(fid,'iPROF', dimid )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed 2:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       err = NF_INQ_DIMLEN(fid, dimid, ProfNo(num_file,bi,bj) )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed 3:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       err = NF_INQ_DIMID(fid,'iDEPTH', dimid )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed 4:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       IF (err.NE.NF_NOERR) THEN
         err = NF_INQ_DIMID(fid,'Z', dimid )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed 5:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       ENDIF
       err = NF_INQ_DIMLEN(fid, dimid, ProfDepthNo(num_file,bi,bj) )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed 6:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       err = NF_INQ_DIMID(fid,'iINTERP', dimid )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed 7:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       IF (err.EQ.NF_NOERR) THEN
         err = NF_INQ_DIMLEN(fid, dimid, iINTERP )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed 8:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       ELSE
         iINTERP=NUM_INTERP_POINTS
       ENDIF
@@ -213,9 +261,21 @@ c1)  read the number of profiles :
 
 c2) read the dates and positions :
       err = NF_INQ_VARID(fid,'prof_depth', varid1a )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed 9:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       IF (err.NE.NF_NOERR) THEN
 c       if no prof_depth is found, then try old variable name:
         err = NF_INQ_VARID(fid,'depth', varid1a )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed10:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       ENDIF
       IF (err.NE.NF_NOERR) THEN
 c       if neither is found, then stop
@@ -230,12 +290,42 @@ c       if neither is found, then stop
       DO k=1,ProfDepthNo(num_file,bi,bj)
       err = NF_GET_VAR1_DOUBLE(fid,varid1a,k,
      & prof_depth(num_file,k,bi,bj))
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed11:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       ENDDO
 
       err = NF_INQ_VARID(fid,'prof_YYYYMMDD', varid1a )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed12:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       err = NF_INQ_VARID(fid,'prof_HHMMSS', varid1b )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed13:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       err = NF_INQ_VARID(fid,'prof_lon', varid2 )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed14:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       err = NF_INQ_VARID(fid,'prof_lat', varid3 )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed15:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
 #ifdef ALLOW_PROFILES_SAMPLESPLIT_COST
       err = NF_INQ_VARID(fid,'prof_bin_id_a', varid4 )
 #endif
@@ -317,12 +407,36 @@ c5.1) read a chunk
 
       err = NF_GET_VARA_DOUBLE(fid,varid1a,vec_start(2),
      & vec_count(2), tmpyymmdd)
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed16:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       err = NF_GET_VARA_DOUBLE(fid,varid1b,vec_start(2),
      & vec_count(2), tmphhmmss)
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed17:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       err = NF_GET_VARA_DOUBLE(fid,varid2,vec_start(2),
      & vec_count(2), tmp_lon2)
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed18:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       err = NF_GET_VARA_DOUBLE(fid,varid3,vec_start(2),
      & vec_count(2), tmp_lat2)
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed19:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
 #ifdef ALLOW_PROFILES_SAMPLESPLIT_COST
       err = NF_GET_VARA_DOUBLE(fid,varid4,vec_start(2),
      & vec_count(2), tmp_avgbin)
@@ -611,7 +725,7 @@ c check that maximum size was not reached:
       CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
      &                    SQUEEZE_RIGHT, myThid )
 
-c6) available variablesin the data set
+c6) available variables in the data set
 
       DO k=1,NVARMAX
         prof_num_var_cur(num_file,k,bi,bj)=0
@@ -621,6 +735,12 @@ c6) available variablesin the data set
       DO k=1,NVARMAX
         JL  = ILNBLNK( prof_names(num_file,k) )
         err = NF_INQ_VARID(fid,prof_names(num_file,k)(1:JL), varid1 )
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed20:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
         IF (err.EQ.NF_NOERR) THEN
           vec_quantities(num_file,k,bi,bj)=.TRUE.
           prof_num_var_tot(num_file,bi,bj)=
@@ -683,6 +803,12 @@ C===========================================================
       ELSE
 C obtain existing NetCDF file id
         err = NF_OPEN(fnameequinc,NF_WRITE,fidforward(num_file,bi,bj))
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed21:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       ENDIF
 #ifdef ALLOW_ADJOINT_RUN
       inquire( file=adfnameequinc, exist=exst )
@@ -694,6 +820,12 @@ C obtain existing NetCDF file id
       ELSE
 C obtain existing NetCDF file id
         err = NF_OPEN(adfnameequinc,NF_WRITE,fidadjoint(num_file,bi,bj))
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed22:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       ENDIF
 #endif
 #ifdef ALLOW_TANGENTLINEAR_RUN
@@ -706,6 +838,12 @@ C obtain existing NetCDF file id
       ELSE
 C obtain existing NetCDF file id
         err = NF_OPEN(tlfnameequinc,NF_WRITE,fidtangent(num_file,bi,bj))
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: p_init_fixed23:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
       ENDIF
 #endif
       ELSE
@@ -906,7 +1044,7 @@ c1) you want to provide interpolation information
          jG=bj+(myYGlobalLo-1)/sNy ! Kludge until unstructered tiles
 cgf XC grid
        CALL MDSFINDUNIT( fid , myThid )
-       WRITE(fnameequinc,'(a,i3.3,a,i3.3,a,i4.4,a,i4.4,a)')
+       WRITE(fnameequinc,'(a,2(i3.3,a),2(i4.4,a))')
      & 'profilesXCincl1PointOverlap.',iG,'.',jG,'.',sNx,'.',sNy,'.data'
          k=MDS_RECLEN(64,(sNx+2)*(sNy+2),myThid)
             WRITE(standardMessageUnit,'(A,/,2A)')

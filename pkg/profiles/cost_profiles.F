@@ -133,6 +133,12 @@ C initialize
      &        (profilesDoNcOutput) ) then
 c need to close the file so that the data is not lost when run finishes
            err = NF_CLOSE(fidforward(num_file,bi,bj))
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: cost_profiles 1:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
 c then re-open it to compute cost function
            iG=bi+(myXGlobalLo-1)/sNx ! Kludge until unstructered tiles
            jG=bj+(myYGlobalLo-1)/sNy ! Kludge until unstructered tiles
@@ -146,6 +152,12 @@ c then re-open it to compute cost function
 c
            err = NF_OPEN(fnameequinc,NF_NOWRITE,
      &     fidforward(num_file,bi,bj))
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: cost_profiles 2:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
          endif
 
 C find the vertical indices
@@ -412,6 +424,12 @@ C      _END_MASTER( myThid )
      &         (profilesDoNcOutput) ) then
 c need to close the file so that the data is not lost when run finishes
            err = NF_CLOSE(fidforward(num_file,bi,bj))
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: cost_profiles 3:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
 c then re-open it to compute cost function
            iG=bi+(myXGlobalLo-1)/sNx ! Kludge until unstructered tiles
            jG=bj+(myYGlobalLo-1)/sNy ! Kludge until unstructered tiles
@@ -425,6 +443,12 @@ c then re-open it to compute cost function
 c
            err = NF_OPEN(fnameequinc,NF_NOWRITE,
      &     fidforward(num_file,bi,bj))
+        if (err /= NF_NOERR) then
+            WRITE(msgBuf,'(a,i,a)') 'ESCO: cost_profiles 4:',err,
+     &      nf_strerror(err)
+            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
+     &                          SQUEEZE_RIGHT,myThid )
+        endif
           endif
 
           do prof_num=1,NOBSGLOB
