@@ -681,6 +681,7 @@ C===========================================================
      &   ProfDepthNo(num_file,bi,bj),
      &   bi,bj,myThid)
       ELSE
+C obtain existing NetCDF file id
         err = NF_OPEN(fnameequinc,NF_WRITE,fidforward(num_file,bi,bj))
       ENDIF
 #ifdef ALLOW_ADJOINT_RUN
@@ -691,6 +692,7 @@ C===========================================================
      &   ProfNo(num_file,bi,bj),ProfDepthNo(num_file,bi,bj),
      & bi,bj, myThid)
       ELSE
+C obtain existing NetCDF file id
         err = NF_OPEN(adfnameequinc,NF_WRITE,fidadjoint(num_file,bi,bj))
       ENDIF
 #endif
@@ -702,6 +704,7 @@ C===========================================================
      &   ProfNo(num_file,bi,bj),ProfDepthNo(num_file,bi,bj),
      & bi,bj, myThid)
       ELSE
+C obtain existing NetCDF file id
         err = NF_OPEN(tlfnameequinc,NF_WRITE,fidtangent(num_file,bi,bj))
       ENDIF
 #endif

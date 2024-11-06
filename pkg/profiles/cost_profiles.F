@@ -526,6 +526,8 @@ C end of #ifndef ALLOW_PROFILES_SAMPLESPLIT_COST
      &      prof_names(num_file,num_var),
      &      objf_profiles(num_file,num_var,bi,bj),
      &      num_profiles(num_file,num_var,bi,bj)
+           call print_message(
+     &      msgbuf, standardMessageUnit, SQUEEZE_RIGHT , myThid)
           enddo !do num_var...
          endif
       ENDIF
