@@ -725,12 +725,16 @@ C===========================================================
 
         WRITE(fnameequinc,'(3a,2(i3.3,a))')
      & profilesDir(1:JL),profilesfile(1:IL),'.',iG,'.',jG,'.equi.nc'
+C#ifdef ALLOW_ADJOINT_RUN
         WRITE(adfnameequinc,'(4a,2(i3.3,a))')
      & profilesDir(1:JL),'ad',
      & profilesfile(1:IL),'.',iG,'.',jG,'.equi.nc'
+C#endif
+#ifdef ALLOW_TANGENTLINEAR_RUN
         WRITE(tlfnameequinc,'(4a,2(i3.3,a))')
      & profilesDir(1:JL),'tl',
      & profilesfile(1:IL),'.',iG,'.',jG,'.equi.nc'
+#endif
 
         JL  = ILNBLNK( fnameequinc )
         inquire( file=fnameequinc(1:JL), exist=exst )
@@ -783,12 +787,16 @@ C obtain existing NetCDF file id
 
         WRITE(fnameequinc,'(3a,2(i3.3,a))')
      & profilesDir(1:JL),profilesfile(1:IL),'.',iG,'.',jG,'.equi.data'
+C#ifdef ALLOW_ADJOINT_RUN
         WRITE(adfnameequinc,'(4a,2(i3.3,a))')
      & profilesDir(1:JL),'ad',
      & profilesfile(1:IL),'.',iG,'.',jG,'.equi.data'
+C#endif
+#ifdef ALLOW_TANGENTLINEAR_RUN
         WRITE(tlfnameequinc,'(4a,2(i3.3,a))')
      & profilesDir(1:JL),'tl',
      & profilesfile(1:IL),'.',iG,'.',jG,'.equi.data'
+#endif
 
         JL  = ILNBLNK( fnameequinc )
         inquire( file=fnameequinc(1:JL), exist=exst )
@@ -810,11 +818,11 @@ C obtain existing NetCDF file id
 #ifdef ALLOW_ADJOINT_RUN
         JL  = ILNBLNK( adfnameequinc )
         inquire( file=adfnameequinc(1:JL), exist=exst )
-#ifdef PROFILES_USE_MDSFINDUNITS
+# ifdef PROFILES_USE_MDSFINDUNITS
         CALL MDSFINDUNIT( fidadjoint(num_file,bi,bj) , myThid )
-#else
+# else
         CALL PROFILES_FINDUNIT( fidadjoint(num_file,bi,bj) , myThid )
-#endif
+# endif
         IF (.NOT.exst) THEN
          CALL profiles_init_ncfile(num_file,fiddata(num_file,bi,bj),
      &   adfnameequinc(1:JL), fidadjoint(num_file,bi,bj),
@@ -829,11 +837,11 @@ C obtain existing NetCDF file id
 #ifdef ALLOW_TANGENTLINEAR_RUN
         JL  = ILNBLNK( tlfnameequinc )
         inquire( file=tlfnameequinc(1:JL), exist=exst )
-#ifdef PROFILES_USE_MDSFINDUNITS
+# ifdef PROFILES_USE_MDSFINDUNITS
         CALL MDSFINDUNIT( fidtangent(num_file,bi,bj) , myThid )
-#else
+# else
         CALL PROFILES_FINDUNIT( fidtangent(num_file,bi,bj) , myThid )
-#endif
+# endif
         IF (.NOT.exst) THEN
          CALL profiles_init_ncfile(num_file,fiddata(num_file,bi,bj),
      &   tlfnameequinc(1:JL), fidtangent(num_file,bi,bj),
