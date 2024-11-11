@@ -133,12 +133,7 @@ C initialize
      &        (profilesDoNcOutput) ) then
 c need to close the file so that the data is not lost when run finishes
            err = NF_CLOSE(fidforward(num_file,bi,bj))
-        if (err /= NF_NOERR) then
-            WRITE(msgBuf,'(a,i,a)') 'ESCO: cost_profiles 1:',err,
-     &      nf_strerror(err)
-            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
-     &                          SQUEEZE_RIGHT,myThid )
-        endif
+           CALL PROFILES_NF_ERROR('COST 1: NF_CLOSE', err,bi,bj,myThid)
 c then re-open it to compute cost function
            iG=bi+(myXGlobalLo-1)/sNx ! Kludge until unstructered tiles
            jG=bj+(myYGlobalLo-1)/sNy ! Kludge until unstructered tiles
@@ -150,14 +145,10 @@ c then re-open it to compute cost function
            write(fnameequinc,'(3a,2(i3.3,a))')
      &     profilesDir(1:JL),profilesfile(1:IL),'.',iG,'.',jG,'.equi.nc'
 c
-           err = NF_OPEN(fnameequinc,NF_NOWRITE,
+           JL  = ILNBLNK( fnameequinc )
+           err = NF_OPEN(fnameequinc(1:JL) ,NF_NOWRITE,
      &     fidforward(num_file,bi,bj))
-        if (err /= NF_NOERR) then
-            WRITE(msgBuf,'(a,i,a)') 'ESCO: cost_profiles 2:',err,
-     &      nf_strerror(err)
-            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
-     &                          SQUEEZE_RIGHT,myThid )
-        endif
+           CALL PROFILES_NF_ERROR('COST 2: NF_OPEN', err,bi,bj,myThid)
          endif
 
 C find the vertical indices
@@ -424,12 +415,7 @@ C      _END_MASTER( myThid )
      &         (profilesDoNcOutput) ) then
 c need to close the file so that the data is not lost when run finishes
            err = NF_CLOSE(fidforward(num_file,bi,bj))
-        if (err /= NF_NOERR) then
-            WRITE(msgBuf,'(a,i,a)') 'ESCO: cost_profiles 3:',err,
-     &      nf_strerror(err)
-            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
-     &                          SQUEEZE_RIGHT,myThid )
-        endif
+           CALL PROFILES_NF_ERROR('COST 3: NF_CLOSE', err,bi,bj,myThid)
 c then re-open it to compute cost function
            iG=bi+(myXGlobalLo-1)/sNx ! Kludge until unstructered tiles
            jG=bj+(myYGlobalLo-1)/sNy ! Kludge until unstructered tiles
@@ -441,14 +427,10 @@ c then re-open it to compute cost function
            write(fnameequinc,'(3a,2(i3.3,a))')
      &     profilesDir(1:JL),profilesfile(1:IL),'.',iG,'.',jG,'.equi.nc'
 c
-           err = NF_OPEN(fnameequinc,NF_NOWRITE,
+           JL  = ILNBLNK( fnameequinc )
+           err = NF_OPEN(fnameequinc(1:JL) ,NF_NOWRITE,
      &     fidforward(num_file,bi,bj))
-        if (err /= NF_NOERR) then
-            WRITE(msgBuf,'(a,i,a)') 'ESCO: cost_profiles 4:',err,
-     &      nf_strerror(err)
-            CALL PRINT_MESSAGE( msgBuf, standardMessageUnit,
-     &                          SQUEEZE_RIGHT,myThid )
-        endif
+           CALL PROFILES_NF_ERROR('COST 4: NF_OPEN', err,bi,bj,myThid)
           endif
 
           do prof_num=1,NOBSGLOB
@@ -701,7 +683,9 @@ C! ifdef ALLOW_PROFILES_SAMPLESPLIT_COST
       call print_message( msgbuf,
      &  standardMessageUnit,SQUEEZE_RIGHT , myThid)
 
-c     call profiles_make_ncfile(myThid)
+      IF ( prof_make_nc ) THEN
+       call profiles_make_ncfile(myThid)
+      ENDIF
 
 C===========================================================
 
