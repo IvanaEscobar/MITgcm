@@ -288,21 +288,21 @@ c       if neither is found, then stop
 
       IF (profilesDoGenGrid) THEN
 c3) read interpolattion information (grid points, coeffs, etc.)
-        err = NF_INQ_VARID(fid,'prof_interp_XC11',varid_intp1)
-        err = NF_INQ_VARID(fid,'prof_interp_YC11',varid_intp2)
-        err = NF_INQ_VARID(fid,'prof_interp_XCNINJ',varid_intp11)
-        err = NF_INQ_VARID(fid,'prof_interp_YCNINJ',varid_intp22)
-        err = NF_INQ_VARID(fid,'prof_interp_weights',varid_intp3)
-        err = NF_INQ_VARID(fid,'prof_interp_i',varid_intp4)
-        err = NF_INQ_VARID(fid,'prof_interp_j',varid_intp5)
-        IF (err.NE.NF_NOERR) THEN
-          IL  = ILNBLNK( profilesfile )
-          WRITE(msgBuf,'(3A)')
-     & 'PROFILES_INIT_FIXED: file ', profilesfile(1:IL),
-     & '.nc is missing interpolation information (profilesDoGenGrid)'
-          CALL PRINT_ERROR( msgBuf, myThid)
-          stopGenericGrid=2
-        ENDIF
+       err = NF_INQ_VARID(fid,'prof_interp_XC11',varid_intp1)
+       err = NF_INQ_VARID(fid,'prof_interp_YC11',varid_intp2)
+       err = NF_INQ_VARID(fid,'prof_interp_XCNINJ',varid_intp11)
+       err = NF_INQ_VARID(fid,'prof_interp_YCNINJ',varid_intp22)
+       err = NF_INQ_VARID(fid,'prof_interp_weights',varid_intp3)
+       err = NF_INQ_VARID(fid,'prof_interp_i',varid_intp4)
+       err = NF_INQ_VARID(fid,'prof_interp_j',varid_intp5)
+       IF (err.NE.NF_NOERR) THEN
+        IL  = ILNBLNK( profilesfile )
+        WRITE(msgBuf,'(3A)')
+     &   'PROFILES_INIT_FIXED: file ', profilesfile(1:IL),
+     &   '.nc is missing interpolation information (profilesDoGenGrid)'
+        CALL PRINT_ERROR( msgBuf, myThid)
+        stopGenericGrid=2
+       ENDIF
       ENDIF
 
 c4) default values
@@ -1091,7 +1091,6 @@ c2) stop after other kind of errors
      &                    SQUEEZE_RIGHT, myThid )
 
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
-
 #endif /* ALLOW_PROFILES */
 
       RETURN
