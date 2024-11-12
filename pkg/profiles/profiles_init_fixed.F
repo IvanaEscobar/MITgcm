@@ -752,7 +752,7 @@ C obtain existing NetCDF file id
      &        err,bi,bj,myThid )
         ENDIF
 #ifdef ALLOW_ADJOINT_RUN
-         JL  = ILNBLNK( adfnameequinc )
+        JL  = ILNBLNK( adfnameequinc )
         inquire( file=adfnameequinc(1:JL), exist=exst )
         IF (.NOT.exst) THEN
          CALL profiles_init_ncfile(num_file,fiddata(num_file,bi,bj),
@@ -768,7 +768,7 @@ C obtain existing NetCDF file id
         ENDIF
 #endif
 #ifdef ALLOW_TANGENTLINEAR_RUN
-         JL  = ILNBLNK( tlfnameequinc )
+        JL  = ILNBLNK( tlfnameequinc )
         inquire( file=tlfnameequinc(1:JL), exist=exst )
         IF (.NOT.exst) THEN
          CALL profiles_init_ncfile(num_file,fiddata(num_file,bi,bj),
