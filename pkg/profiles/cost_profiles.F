@@ -333,7 +333,6 @@ C note prof_weights1D_all_mean is still sigam^2. Need to convert to weight
         ENDDO
        ENDDO
 
-C     _BEGIN_MASTER( myThid )
        IF ( myProcId .eq. 0 ) THEN
 
         DO num_var=1,NVARMAX
@@ -401,8 +400,6 @@ C    &         access  = 'sequential'   )
          close ( cunit )
         ENDDO ! DO num_var=1,NVARMAX
        ENDIF ! IF ( myProcId .eq. 0 ) THEN
-C      _END_MASTER( myThid )
-       _BARRIER
 #endif
 
        DO bj=1,nSy
