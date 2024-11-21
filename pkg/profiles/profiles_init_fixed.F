@@ -558,10 +558,13 @@ C If tmp hhmmss is out of range then disregard profile
                           profIsInRunTime = 0
                           diffsecs = -deltaTClock
                           ProfNo_hh = ProfNo_hh+1
+
                         ENDIF
+
                       ELSE
                         profIsInRunTime = 0
                         diffsecs = -deltaTClock
+
                       ENDIF !IF (( (tmpyymmdd(c)
 
 C 5.2a) Determine profiles in current tile domain (lat-lon grid case)
@@ -816,7 +819,7 @@ C Check that maximum size was not reached:
 
                       ENDIF
 
-                    ENDIF !IF (stopProfiles .EQ. 0)
+                    ENDIF !IF (stopProfiles.EQ.0)
                   ENDDO !DO c
 
                 ENDIF !IF (MIN(ProfNo(num_file,bi,bj)
@@ -923,11 +926,11 @@ C===========================================================
                   INQUIRE( FILE = fnameequinc(1:JL), EXIST = exst )
                   IF (.NOT.exst) THEN
                     CALL PROFILES_INIT_NCFILE( num_file,
-     &                   fiddata(num_file,bi,bj),fnameequinc(1:JL),
+     &                   fiddata(num_file,bi,bj), fnameequinc(1:JL),
      &                   fidforward(num_file,bi,bj),
      &                   ProfNo(num_file,bi,bj),
      &                   ProfDepthNo(num_file,bi,bj),
-     &                   bi,bj,myThid )
+     &                   bi, bj, myThid )
                   ELSE
 C Obtain existing NetCDF file id
                     err = NF_OPEN( fnameequinc(1:JL), NF_WRITE,
@@ -942,11 +945,11 @@ C Obtain existing NetCDF file id
                   INQUIRE( FILE = adfnameequinc(1:JL), EXIST = exst )
                   IF (.NOT.exst) THEN
                     CALL PROFILES_INIT_NCFILE( num_file,
-     &                   fiddata(num_file,bi,bj),adfnameequinc(1:JL),
+     &                   fiddata(num_file,bi,bj), adfnameequinc(1:JL),
      &                   fidadjoint(num_file,bi,bj),
      &                   ProfNo(num_file,bi,bj),
      &                   ProfDepthNo(num_file,bi,bj),
-     &                   bi,bj,myThid )
+     &                   bi, bj, myThid )
                   ELSE
 C Obtain existing NetCDF file id
                     err = NF_OPEN( adfnameequinc(1:JL), NF_WRITE,
