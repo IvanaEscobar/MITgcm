@@ -1,1 +1,0 @@
-/home/ivana/ihop/src/ihop_cost_init_equifiles.F
