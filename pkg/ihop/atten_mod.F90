@@ -1,1 +1,1 @@
-/home/ivana/ihop/src/atten_mod.F90
+/Users/ivana/work/ihop/src/atten_mod.F90

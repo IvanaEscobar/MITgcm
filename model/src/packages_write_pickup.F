@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/packages_write_pickup.F
+/Users/ivana/work/ihop/mitgcm_code/packages_write_pickup.F

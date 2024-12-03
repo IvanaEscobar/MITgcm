@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/ecco_readparms.F
+/Users/ivana/work/ihop/mitgcm_code/ecco_readparms.F

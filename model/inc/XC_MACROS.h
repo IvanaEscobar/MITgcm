@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/XC_MACROS.h
+/Users/ivana/work/ihop/mitgcm_code/XC_MACROS.h

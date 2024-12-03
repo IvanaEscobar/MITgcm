@@ -1,1 +1,1 @@
-/home/ivana/ihop/src/beampat.F90
+/Users/ivana/work/ihop/src/beampat.F90

@@ -1,1 +1,1 @@
-/home/ivana/ihop/src/ihop_check.F
+/Users/ivana/work/ihop/src/ihop_check.F

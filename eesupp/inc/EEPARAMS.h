@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/EEPARAMS.h
+/Users/ivana/work/ihop/mitgcm_code/EEPARAMS.h

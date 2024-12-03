@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/CPP_EEOPTIONS.h
+/Users/ivana/work/ihop/mitgcm_code/CPP_EEOPTIONS.h

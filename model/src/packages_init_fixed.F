@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/packages_init_fixed.F
+/Users/ivana/work/ihop/mitgcm_code/packages_init_fixed.F

@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/the_model_main.F
+/Users/ivana/work/ihop/mitgcm_code/the_model_main.F

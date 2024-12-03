@@ -1,1 +1,1 @@
-/home/ivana/ihop/src/srpos_mod.F90
+/Users/ivana/work/ihop/src/srpos_mod.F90

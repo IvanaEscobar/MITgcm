@@ -1,1 +1,1 @@
-/home/ivana/ihop/src/ihop_init_varia.F
+/Users/ivana/work/ihop/src/ihop_init_varia.F

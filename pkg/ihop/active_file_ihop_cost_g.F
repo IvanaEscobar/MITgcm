@@ -1,1 +1,1 @@
-/home/ivana/ihop/src/active_file_ihop_cost_g.F
+/Users/ivana/work/ihop/src/active_file_ihop_cost_g.F

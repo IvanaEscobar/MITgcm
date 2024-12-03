@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/PARAMS.h
+/Users/ivana/work/ihop/mitgcm_code/PARAMS.h

@@ -1,1 +1,1 @@
-/home/ivana/ihop/src/ihop.F90
+/Users/ivana/work/ihop/src/ihop.F90

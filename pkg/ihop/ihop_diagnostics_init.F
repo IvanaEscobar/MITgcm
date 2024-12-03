@@ -1,1 +1,1 @@
-/home/ivana/ihop/src/ihop_diagnostics_init.F
+/Users/ivana/work/ihop/src/ihop_diagnostics_init.F
