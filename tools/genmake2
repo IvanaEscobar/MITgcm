@@ -3170,7 +3170,6 @@ while IFS= read -r f90file; do
 	echo $f90file >> $TMP.F90Files
     fi
 done < $TMP.F90noGraph
-#
 
 # Format to F90srclist specs
 sed -e 's|.*/||' -e 's/^/ /' -e 's/$/ \\/' "$TMP.F90Files" > "$TMP.F90Files.tmp"
@@ -3178,10 +3177,10 @@ sed '2,$d' $TMP.F90srclist > $TMP.F90srclist.tmp
 
 cat $TMP.F90Files.tmp >> $TMP.F90srclist.tmp
 cat $TMP.F90srclist.tmp > $TMP.F90srclist
-#
+
 # Clean up topological sorting files
 rm -rf $TMP.F90Files.tmp $TMP.F90Files $TMP.F90srclist.tmp
-rm -rf $TMP.F90Graph $TMP.noF90Graph
+rm -rf $TMP.F90Graph $TMP.F90noGraph
 
 rm -rf $TMP.links
 echo "" >> $TMP.F77srclist
