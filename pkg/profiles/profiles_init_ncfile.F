@@ -35,11 +35,11 @@ C     myThid: my thread ID number
       INTEGER bi, bj, myThid
 CEOP
 
+#ifdef ALLOW_PROFILES
 C     !LOCAL VARIABLES:
       INTEGER k,err,vecid(2)
       INTEGER irec,num_var,dimId1,dimId2,varId(2*NVARMAX),varId0
       _RL tmp_vec(Zlength+1)
-#ifdef ALLOW_PROFILES
       CHARACTER*(MAX_LEN_MBUF) msgBuf
 
       IF (profilesDoNcOutput) THEN
@@ -101,14 +101,15 @@ C1) Creation :
      &           err,bi,bj,myThid )
 
           ELSE
-            CALL PROFILES_NF_ERROR(
-     &           'INIT_NCFILE: NF_INQ_VARID prof_names',
-     &           err,bi,bj,myThid )
             WRITE(msgBuf,'(2A)')
-     &       'S/R PROFILES_INIT_NCFILE: no variable ',
-     &       prof_names(num_file,num_var)
+     &          'S/R PROFILES_INIT_NCFILE: no variable ',
+     &          prof_names(num_file,num_var)
             CALL PRINT_MESSAGE( msgBuf,
      &           standardMessageUnit, SQUEEZE_RIGHT, myThid )
+            WRITE(msgBuf,'(2A)')
+     &           'INIT_NCFILE: NF_INQ_VARID prof_names = ',
+     &           prof_names(num_file,num_var)
+            CALL PROFILES_NF_ERROR( msgBuf, err, bi, bj, myThid )
 
           ENDIF
         ENDDO !DO num_var
@@ -130,7 +131,7 @@ C1) Creation :
      &   RECL = (Zlength + 1)*WORDLENGTH*2 )
 
         DO k = 1, Zlength+1
-          tmp_vec(k) = 0
+          tmp_vec(k) = zeroRL
         ENDDO
 
 # ifdef _BYTESWAPIO

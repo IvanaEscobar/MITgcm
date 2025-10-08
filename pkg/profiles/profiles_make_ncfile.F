@@ -33,14 +33,14 @@ C     !FUNCTIONS:
 
 C     !LOCAL VARIABLES:
       INTEGER kLev, kProf, k
-      INTEGER num_file,num_var,prof_num
-      INTEGER bi,bj,iG,jG
-      INTEGER err,dimId,irec,fid1,fid2
-      INTEGER dimId1,dimId2,vecid(2)
-      INTEGER varId0,varId1(NVARMAX*2),varId2(NVARMAX*2)
-      INTEGER length,Zlength,optimcycle
-      INTEGER IL,JL
-      INTEGER vec_start(2),vec_count(2)
+      INTEGER num_file, num_var, prof_num
+      INTEGER bi, bj
+      INTEGER err, dimId, irec, fid1, fid2
+      INTEGER dimId1, dimId2, vecid(2)
+      INTEGER varId0, varId1(NVARMAX*2), varId2(NVARMAX*2)
+      INTEGER length, Zlength, optimcycle
+      INTEGER IL, JL
+      INTEGER vec_start(2), vec_count(2)
       _RL tmpgs
       _RL prof_mask1D(NLEVELMAX)
       _RL prof_traj1D(NLEVELMAX)
@@ -53,8 +53,6 @@ C     !LOCAL VARIABLES:
       CHARACTER*(MAX_LEN_FNAM) fnameequinc
       CHARACTER*(MAX_LEN_FNAM) fnamedata
       LOGICAL exst
-
-      _BEGIN_MASTER( myThid )
 
 C Set new netcdf variables names
       DO num_file = 1, NFILESPROFMAX
@@ -77,6 +75,8 @@ C Initialize buffers
 
 C Loop over files
       DO num_file = 1, NFILESPROFMAX
+
+        _BEGIN_MASTER( myThid )
 C File maintenance
         DO bj = 1, nSy
           DO bi = 1, nSx
@@ -91,8 +91,7 @@ C Need to close file so that data is not lost when run finishes
 
 C Loop over variables
             DO num_var = 1, NVARMAX
-              IF (vec_quantities(num_file,num_var,bi,bj).EQV..TRUE.)
-     &        THEN
+              IF (vec_quantities(num_file,num_var,bi,bj)) THEN
 C Loop over profiles
                 DO prof_num = 1, NOBSGLOB
                   IF (prof_num.LE.ProfNo(num_file,bi,bj)) THEN
@@ -133,6 +132,7 @@ C Combine all threads
 
           ENDDO !DO bi
         ENDDO !DO bj
+        _END_MASTER( myThid )
 
 C Combine all processes
         DO num_var = 1, NVARMAX
@@ -151,6 +151,7 @@ C Combine all processes
           ENDDO !DO prof_num
         ENDDO !DO num_var
 
+        _BEGIN_MASTER( myThid )
         IF (myProcId.EQ.0) THEN
 C Get dimensions of input file
           profFile=' '
@@ -266,8 +267,7 @@ C Define variables and attributes
 
 C Write profiles
             DO num_var = 1, NVARMAX
-              IF (vec_quantities(num_file,num_var,1,1).EQV..TRUE.)
-     &        THEN
+              IF (vec_quantities(num_file,num_var,1,1)) THEN
                 DO prof_num = 1, NOBSGLOB
                   IF (prof_num.LE.length) THEN
                     DO k = 1, Zlength
@@ -312,7 +312,7 @@ C Write profiles
 
                   ENDIF !IF (prof_num.LE.length)
                 ENDDO !DO prof_num
-              ENDIF !IF (vec_quantities(num_file,num_var,1,1).EQV.
+              ENDIF !IF vec_quantities(num_file,num_var,1,1)
             ENDDO !DO num_var
 
             err = NF_CLOSE( fid2 )
@@ -321,9 +321,9 @@ C Write profiles
 
           ENDIF !IF (IL.NE.0)
         ENDIF !IF (myProcId.EQ.0)
-      ENDDO !DO num_file
+        _END_MASTER( myThid )
 
-      _END_MASTER( myThid )
+      ENDDO !DO num_file
 
       RETURN
       END

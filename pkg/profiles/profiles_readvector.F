@@ -1,13 +1,12 @@
 #include "PROFILES_OPTIONS.h"
 
-
 C---+----1----+----2----+----3----+----4----+----5----+----6----+----7-|--+----|
 CBOP
 C !ROUTINE: PROFILES_READPARMS
 
 C !INTERFACE:
-      SUBROUTINE PROFILES_READVECTOR(fNb, vNb, irec,
-     & vec_loc_length, vec_loc, bi,bj, myThid)
+      SUBROUTINE PROFILES_READVECTOR( fNb, vNb, irec,
+     & vec_loc_length, vec_loc, bi, bj, myThid )
 
 C     !DESCRIPTION:
 C     Reads a profile from a netcdf profiles data file
@@ -49,7 +48,8 @@ C     !LOCAL VARIABLES:
      &     (irec.GT.profiles_maxind_buff(bi,bj)) .OR.
      &     (profiles_curfile_buff(bi,bj).NE.fNb) ) THEN
         err = NF_INQ_DIMID(fiddata(fNb,bi,bj),'iPROF', varId1)
-        CALL PROFILES_NF_ERROR( 'READVECTOR: NF_INQ_DIMID fiddata',
+        CALL PROFILES_NF_ERROR(
+     &       'READVECTOR: NF_INQ_DIMID fiddata iProf',
      &       err,bi,bj,myThid )
         err = NF_INQ_DIMLEN( fiddata(fNb,bi,bj), varId1, tmpprofno )
         CALL PROFILES_NF_ERROR( 'READVECTOR: NF_INQ_DIMLEN tmpprofno',
@@ -79,7 +79,7 @@ C Implies that a forward loop is calling
      &     profiles_minind_buff(bi,bj), profiles_maxind_buff(bi,bj),
      &     irec, profNo(fNb,bi,bj), tmpprofno
           CALL PRINT_MESSAGE( msgBuf,
-     &         standardmessageunit, SQUEEZE_RIGHT, myThid )
+     &         standardMessageUnit, SQUEEZE_RIGHT, myThid )
         ENDIF
 # endif
 
@@ -90,7 +90,7 @@ C Implies that a forward loop is calling
      &   profiles_maxind_buff(bi,bj)-profiles_minind_buff(bi,bj)+1
 
         DO num_var = 1, NVARMAX
-          IF (vec_quantities(fNb,num_var,bi,bj).EQV..TRUE.) THEN
+          IF ( vec_quantities(fNb,num_var,bi,bj) ) THEN
             err = NF_INQ_VARID( fiddata(fNb,bi,bj),
      &            prof_names(fNb,num_var), varId1 )
             CALL PROFILES_NF_ERROR(
@@ -105,7 +105,7 @@ C Implies that a forward loop is calling
             err = NF_INQ_VARID( fiddata(fNb,bi,bj),
      &            prof_namesweight(fNb,num_var), varId1 )
             CALL PROFILES_NF_ERROR(
-     &           'READVECTOR: NF_INQ_VARID prof_namesweight',
+     &      'READVECTOR: NF_INQ_VARID '//prof_namesweight(fNb,num_var),
      &           err,bi,bj,myThid )
             err = NF_GET_VARA_DOUBLE( fiddata(fNb,bi,bj),
      &            varId1, vec_start, vec_count, vec_tmp2 )
@@ -139,7 +139,7 @@ C Implies that a forward loop is calling
                 profiles_weight_buff(v1,v2,num_var,bi,bj) =
      &           vec_tmp2((v2-1)*vec_count(1)+v1)
 
-# ifdef ALLOW_PROFILES_CLIMMASv1
+# ifdef ALLOW_PROFILES_CLIMMAS
                 IF (vec_tmp3((v2-1)*vec_count(1)+v1).LE.-990. _d 0)
      &            profiles_weight_buff(v1,v2,num_var,bi,bj) = 0. _d 0
 

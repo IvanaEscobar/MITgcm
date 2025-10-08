@@ -45,7 +45,7 @@ CEOP
 
 C     !LOCAL VARIABLES:
 #ifdef ALLOW_PROFILES
-      INTEGER kLev, q
+      INTEGER kLev, iq
       INTEGER bi,bj,prof_num, num_file, num_var
       _RL prof_traj1D(NLEVELMAX),prof_mask1D(NLEVELMAX)
       INTEGER prof_i1D(NUM_INTERP_POINTS),prof_j1D(NUM_INTERP_POINTS)
@@ -60,8 +60,6 @@ C     !LOCAL VARIABLES:
 # ifndef ALLOW_CTRL
       optimcycle = 0
 # endif
-
-      _BEGIN_MASTER( myThid )
 
 # ifndef ALLOW_ECCO
       DO bj = myByLo(myThid), myByHi(myThid)
@@ -82,6 +80,8 @@ C     !LOCAL VARIABLES:
      I     .TRUE., .TRUE., .FALSE., Nr, myThid )
 # endif /* not ALLOW_ECCO */
 
+      _BEGIN_MASTER( myThid )
+
       DO bj = 1, nSy
         DO bi = 1, nSx
           DO num_file = 1, NFILESPROFMAX
@@ -91,13 +91,13 @@ C     !LOCAL VARIABLES:
      &           (prof_time(num_file,prof_num,bi,bj).GE.myTime) .AND.
      &           (prof_time(num_file,prof_num,bi,bj).LT.
      &            (myTime+deltaTClock)) ) THEN
-                  DO q = 1, NUM_INTERP_POINTS
-                    prof_i1D(q) =
-     &               prof_interp_i(num_file,prof_num,q,bi,bj)
-                    prof_j1D(q) =
-     &               prof_interp_j(num_file,prof_num,q,bi,bj)
-                    prof_w1D(q) =
-     &               prof_interp_weights(num_file,prof_num,q,bi,bj)
+                  DO iq = 1, NUM_INTERP_POINTS
+                    prof_i1D(iq) =
+     &               prof_interp_i(num_file,prof_num,iq,bi,bj)
+                    prof_j1D(iq) =
+     &               prof_interp_j(num_file,prof_num,iq,bi,bj)
+                    prof_w1D(iq) =
+     &               prof_interp_weights(num_file,prof_num,iq,bi,bj)
 
                   ENDDO
 
@@ -107,8 +107,7 @@ C     !LOCAL VARIABLES:
                       prof_mask1D(kLev) = 0
                     ENDDO
 
-                    IF (
-     &        vec_quantities(num_file,num_var,bi,bj).EQV..TRUE.) THEN
+                    IF (vec_quantities(num_file,num_var,bi,bj)) THEN
                       CALL PROFILES_INTERP( prof_traj1D,
      &                     prof_i1D,prof_j1D,prof_w1D,
      &                     prof_namesmod(num_file,num_var),
