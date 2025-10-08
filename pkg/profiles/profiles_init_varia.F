@@ -34,26 +34,19 @@ C     == Global variables ===
 
 C     !INPUT/OUTPUT PARAMETERS:
 C     myThid: my thread ID number
-      INTEGER mythid
+      INTEGER myThid
 CEOP
 
 C     !LOCAL VARIABLES:
       INTEGER bi,bj
-      INTEGER itlo,ithi
-      INTEGER jtlo,jthi
       INTEGER num_file,num_var
 #ifdef ALLOW_GRDCHK
       INTEGER err
 #endif /* ALLOW_GRDCHK */
 
-      jtlo = mybylo(mythid)
-      jthi = mybyhi(mythid)
-      itlo = mybxlo(mythid)
-      ithi = mybxhi(mythid)
-
 C Initialize tiled cost function contributions.
-      DO bj = jtlo, jthi
-        DO bi = itlo, ithi
+      DO bj = myByLo(myThid), myByHi(myThid)
+        DO bi = myBxLo(myThid), myBxHi(myThid)
           DO num_file = 1, NFILESPROFMAX
             DO num_var = 1, NVARMAX
               objf_profiles(num_file,num_var,bi,bj) = 0. _d 0
@@ -72,10 +65,19 @@ C Initialize tiled cost function contributions.
             DO num_file = 1, NFILESPROFMAX
               IF (ProfNo(num_file,bi,bj).GT.0) THEN
 C Write data from buffer to .nc file
-              err = NF_SYNC( fidforward(num_file,bi,bj) )
-              CALL PROFILES_NF_ERROR(
-     &             'INIT_VARIA: NF_SYNC fidforward',
-     &             err,bi,bj,myThid )
+                err = NF_SYNC( fidforward(num_file,bi,bj) )
+                CALL PROFILES_NF_ERROR(
+     &               'INIT_VARIA: NF_SYNC fidforward',
+     &               err,bi,bj,myThid )
+
+# ifdef ALLOW_TANGENTLINEAR_RUN
+                IF (TANGENT_SIMULATION) THEN
+                  err = NF_SYNC( fidtangent(num_file,bi,bj) )
+                  CALL PROFILES_NF_ERROR(
+     &                 'INIT_VARIA: NF_SYNC fidtangent',
+     &                 err,bi,bj,myThid )
+                ENDIF
+# endif /* ALLOW_TANGENTLINEAR_RUN */
 
               ENDIF !IF (ProfNo
             ENDDO !DO num_file

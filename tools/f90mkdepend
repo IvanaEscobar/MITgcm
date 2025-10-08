@@ -51,7 +51,6 @@ cat /dev/null > f90mkdepend.log
 for filename in *.F90 *.F *.h; do
   # quick check for "use" to speed up processing
   if grep -i '^ *use ' $filename > /dev/null; then
-
     # extract module name in lower case
     modreflist=$(grep -i '^ *use ' $filename | awk '{print tolower($2)}' | sed -e 's/,.*$//' -e 's/\r$//')
 

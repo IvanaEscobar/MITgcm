@@ -92,8 +92,10 @@ c     character*(MAX_LEN_FNAM) tauum_errfile
 c     character*(MAX_LEN_FNAM) tauvm_errfile
       character*(MAX_LEN_FNAM) scatx_errfile
       character*(MAX_LEN_FNAM) scaty_errfile
+#ifndef ALLOW_CTRL
 C     moved to OBCS_CTRL.h because this file is used for obcs-ctrl parameters
-c     character*(MAX_LEN_FNAM) data_errfile
+      character*(MAX_LEN_FNAM) data_errfile
+#endif
       character*(MAX_LEN_FNAM) geoid_errfile
       character*(MAX_LEN_FNAM) geoid_covariancefile
       character*(MAX_LEN_FNAM) ssh_errfile
