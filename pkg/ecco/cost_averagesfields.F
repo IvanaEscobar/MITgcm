@@ -71,7 +71,7 @@ c     == end of interface ==
 c--   Get the time flags and record numbers for the time averaging.
 
 #ifdef ALLOW_DEBUG
-      IF ( debugMode ) CALL DEBUG_CALL('cost_averagesflags',myThid)
+      IF ( debugMode ) CALL DEBUG_CALL('COST_AVERAGESFLAGS',myThid)
 #endif
       call cost_averagesflags(
      I                    myiter,     mytime,       mythid,

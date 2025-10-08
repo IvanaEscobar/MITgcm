@@ -196,6 +196,9 @@ C--   Ice shelf mask.
      &              ' grad-res ', grdchkwhichproc,
      &              nbeg, itilepos, jtilepos, layer,
      &              itile, jtile
+               WRITE(standardMessageUnit,'(a,3F14.4)')
+     &              ' grad-res ESCOBAR ',
+     &              xc(i,j,bj,bj), yc(i,j,bi,bj), rc(k)
                GOTO 1234
               ENDIF
              ELSEIF ( pastit .EQ. 0 .AND. wetlocal .NE.0 ) THEN
@@ -208,6 +211,9 @@ C--   Ice shelf mask.
      &             ' grad-res ', grdchkwhichproc,
      &             nbeg, itilepos, jtilepos, layer,
      &             itile, jtile
+               WRITE(standardMessageUnit,'(a,3F14.4)')
+     &              ' grad-res ESCOBAR2',
+     &              xc(i,j,bj,bj), yc(i,j,bi,bj), rc(k)
               GOTO 1234
              ENDIF
 

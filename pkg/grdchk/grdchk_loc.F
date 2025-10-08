@@ -95,8 +95,8 @@ C     initialise parameters
       icomploc= 0
 
 cph(
-      print *, 'ph-test icomp, ncvarcomp, ichknum ',
-     &     icomp, ncvarcomp, ichknum
+      print *, 'ph-loc:: ichknum, icomp, ncvarcomp, ',
+     &     ichknum, icomp, ncvarcomp
 cph)
       IF ( icomp .GT. 0 ) THEN
        IF ( icomp .LE. ncvarcomp ) THEN
@@ -126,6 +126,10 @@ c         iobcswrk  = iobcsmem (ichknum-1)
           iwrk      = iwrk + 1
         ENDIF
 
+      print *, 'ph-loc:: itest,icomptest,irecwrk,icglo ',
+     &     itest,icomptest,irecwrk,icglo
+      print *, 'ph-loc:: i/j/kwrk ',
+     &     iwrk,jwrk,kwrk
 C--   set max loop index for obcs multiplicities
         IF ( ncvargrd(grdchkvarindex) .EQ. 'm' ) THEN
 #ifdef ALLOW_OBCS_CONTROL
@@ -140,17 +144,17 @@ C--   set max loop index for obcs multiplicities
 cph(
 cph-print        print *, 'ph-grd _loc: icomp, ichknum ',
 cph-print     &       icomp, ichknum, ncvarcomp
-cpj)
+cph)
 C--   Start to loop over records.
+Cesco   Do 1,1
         DO irec = irecwrk, ncvarrecs(grdchkvarindex)
-c        do iobcs = iobcswrk, nobcsmax
          iobcs = MOD((irec-1),nobcsmax) + 1
-c        do bj = bjwrk, nSy
-c         do bi = biwrk, nSx
-           bj = jLocTile
-           bi = iLocTile
 
-           DO k = kwrk, ncvarnrmax(grdchkvarindex)
+         bj = jLocTile
+         bi = iLocTile
+
+Cesco   Do 1,15, then 2,15, then 3,15...
+         DO k = kwrk, ncvarnrmax(grdchkvarindex)
              icglo   = icglo + nwettile(bi,bj,k,iobcs)
              icglom1 = icglo - nwettile(bi,bj,k,iobcs)
 cph(
@@ -159,16 +163,9 @@ cph(
 cph-print        print *, 'ph-grd _loc: icglo ',
 cph-print     &       k, icglo, icglom1, iwetsum(bi,bj,k)
 cpj)
-             IF ( (ierr .NE. 0) .AND.
-     &            (icomp .GT. icglom1 .AND. icomp .LE. icglo) ) THEN
-cph
-cph             if ( (ierr .NE. 0) .AND.
-cph     &            (icomp .GT.
-cph     &              (iobcs-1)*iwetsum(bi,bj,nr)+iwetsum(bi,bj,k-1))
-cph     &              .AND.
-cph     &            (icomp .LE.
-cph     &              (iobcs-1)*iwetsum(bi,bj,nr)+iwetsum(bi,bj,k))) then
-cph
+             IF ( (ierr.NE.0) .AND.
+     &            (icomp.GT.icglom1 .AND. icomp.LE.icglo) ) THEN
+
                IF ( icomptest .EQ. 0 ) THEN
                   icomptest = icglom1
                ENDIF

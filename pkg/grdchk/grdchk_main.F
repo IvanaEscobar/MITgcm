@@ -141,7 +141,7 @@ CEOP
       WRITE(msgBuf,'(A)')
      &'// ======================================================='
       CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
-      WRITE(msgBuf,'(A)') '// Gradient-check starts (grdchk_main)'
+      WRITE(msgBuf,'(A)') '// Gradient check starts (grdchk_main)'
       CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
       WRITE(msgBuf,'(A)')
      &'// ======================================================='
@@ -207,17 +207,21 @@ C--   forward run with unperturbed control vector
 
       WRITE(standardMessageUnit,'(A)')
      &    'grad-res -------------------------------'
+      CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
       WRITE(standardMessageUnit,'(2a)')
      &    ' grad-res  proc    #    i    j    k   bi   bj iobc',
      &    '       fc ref            fc + eps           fc - eps'
+      CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
 #ifdef ALLOW_TANGENTLINEAR_RUN
       WRITE(standardMessageUnit,'(2a)')
      &    ' grad-res  proc    #    i    j    k   bi   bj iobc',
      &    '      tlm grad            fd grad          1 - fd/tlm'
+      CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
 #else
       WRITE(standardMessageUnit,'(2a)')
      &    ' grad-res  proc    #    i    j    k   bi   bj iobc',
      &    '      adj grad            fd grad          1 - fd/adj'
+      CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
 #endif
 
 C--   Compute the finite difference approximations.
@@ -233,8 +237,11 @@ C--   gradient checks.
 
         IF ( ichknum .LE. maxgrdchecks ) THEN
           WRITE(msgBuf,'(A,I4,A)')
-     &      '====== Starts gradient-check number', ichknum,
+     &      '====== Starts gradient check number', ichknum,
      &                                         ' (=ichknum) ======='
+          CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
+          WRITE(msgBuf,'(A,4I8)')
+     &      'ESCO icomp, nbeg, nend, nstep ',icomp,nbeg,nend,nstep
           CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
 
 C--       Determine the location of icomp on the grid.
@@ -519,7 +526,7 @@ C******************************************************
 #endif
 
           WRITE(msgBuf,'(A,I4,A,I3,A)')
-     &      '====== End of gradient-check number', ichknum,
+     &      '====== End of gradient check number', ichknum,
      &                      ' (ierr=', ierr, ') ======='
           CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
 

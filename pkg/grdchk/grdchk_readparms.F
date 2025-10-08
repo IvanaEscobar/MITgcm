@@ -9,7 +9,7 @@ C     ==================================================================
 C     SUBROUTINE grdchk_readparms
 C     ==================================================================
 C
-C     o Read Gradient-check package parameters
+C     o Read Gradient check package parameters
 C
 C     started: Christian Eckert eckert@mit.edu 03-Mar-2000
 C     continued: heimbach@mit.edu: 13-Jun-2001
@@ -139,9 +139,17 @@ C       Next, read the GRDCHK parameter file.
 C--    From Tile Global-Indices, set Tile Local-Indices and proc. number
         iLocTile = iGloTile - (myXGlobalLo-1)/sNx
         jLocTile = jGloTile - (myYGlobalLo-1)/sNy
+           WRITE(msgBuf,'(2A,4I0)') 'ESCOBAR',
+     &         'i/jLocTile, i/jglotile ', iLoctile,jloctile,
+     & iglotile,jglotile
+           CALL PRINT_ERROR( msgBuf, myThid )
+
         IF ( iLocTile.GE.1 .AND. iLocTile.LE.nSx .AND.
      &       jLocTile.GE.1 .AND. jLocTile.LE.nSy ) THEN
           grdchkwhichproc = myProcId
+           WRITE(msgBuf,'(2A,I0)') 'ESCOBAR',
+     &         'grdchkwhichproc ', grdchkwhichproc
+           CALL PRINT_ERROR( msgBuf, myThid )
         ENDIF
 
       _END_MASTER( myThid )
