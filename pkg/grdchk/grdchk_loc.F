@@ -74,7 +74,7 @@ C--   == external ==
 
 C     !LOCAL VARIABLES:
       INTEGER bi,bj
-      INTEGER i,j,k
+      INTEGER i,j,k, kk
       INTEGER itmp,jtmp
       INTEGER iobcs
 c     INTEGER biwrk,bjwrk
@@ -98,10 +98,10 @@ cph(
       print *, 'ph-loc:: ichknum, icomp, ncvarcomp, ',
      &     ichknum, icomp, ncvarcomp
 cph)
-      IF ( icomp .GT. 0 ) THEN
-       IF ( icomp .LE. ncvarcomp ) THEN
+      IF ( icomp.GT.0 ) THEN
+       IF ( icomp.LE.ncvarcomp ) THEN
 C--     A valid component of the control variable has been selected.
-        IF ( ichknum .EQ. 1 ) THEN
+        IF ( ichknum.EQ.1 ) THEN
           itest     = 0
           icomptest = 0
           irecwrk   = 1
@@ -131,7 +131,7 @@ c         iobcswrk  = iobcsmem (ichknum-1)
       print *, 'ph-loc:: i/j/kwrk ',
      &     iwrk,jwrk,kwrk
 C--   set max loop index for obcs multiplicities
-        IF ( ncvargrd(grdchkvarindex) .EQ. 'm' ) THEN
+        IF ( ncvargrd(grdchkvarindex).EQ.'m' ) THEN
 #ifdef ALLOW_OBCS_CONTROL
          nobcsmax = nobcs
 #else
@@ -141,146 +141,152 @@ C--   set max loop index for obcs multiplicities
           nobcsmax = 1
         ENDIF
 
-cph(
-cph-print        print *, 'ph-grd _loc: icomp, ichknum ',
-cph-print     &       icomp, ichknum, ncvarcomp
-cph)
 C--   Start to loop over records.
-Cesco   Do 1,1
-        DO irec = irecwrk, ncvarrecs(grdchkvarindex)
+        print *, 'ph loc loop limits irec, k, j, i, ncvar',
+     &  ncvarrecs(grdchkvarindex), ncvarnrmax(grdchkvarindex),
+     &  ncvarymax(grdchkvarindex), ncvarxmax(grdchkvarindex),
+     &  ncvargrd(grdchkvarindex), grdchkvarindex
+
+        DO irec = irecwrk, ncvarrecs(grdchkvarindex) ! 1,1
          iobcs = MOD((irec-1),nobcsmax) + 1
 
          bj = jLocTile
          bi = iLocTile
 
-Cesco   Do 1,15, then 2,15, then 3,15...
-         DO k = kwrk, ncvarnrmax(grdchkvarindex)
+         DO k = kwrk, ncvarnrmax(grdchkvarindex) ! 1,15
              icglo   = icglo + nwettile(bi,bj,k,iobcs)
              icglom1 = icglo - nwettile(bi,bj,k,iobcs)
-cph(
-        print *, 'ph-grd _loc: bi, bj, icomptest, ichknum ',
-     &       bi, bj, icomptest, ichknum
-cph-print        print *, 'ph-grd _loc: icglo ',
-cph-print     &       k, icglo, icglom1, iwetsum(bi,bj,k)
-cpj)
+
+        print *, 'ph-grd _loc: m1, icomp, icglo, ierr',
+     &       icglom1, icomp, icglo, ierr, icomptest
+C If in the correct vertical layer, locate i,j,k
              IF ( (ierr.NE.0) .AND.
      &            (icomp.GT.icglom1 .AND. icomp.LE.icglo) ) THEN
-
-               IF ( icomptest .EQ. 0 ) THEN
+               IF ( icomptest.EQ.0 ) THEN
                   icomptest = icglom1
                ENDIF
+
                icomploc = icomp
                icvrec = irec
                itile  = bi
                jtile  = bj
-cph(
-cph-print               print *, 'ph-grd irec, bj, bi, k ', irec, bj, bi, k
-cpj)
-               DO j = jwrk, ncvarymax(grdchkvarindex)
-                DO i = iwrk, ncvarxmax(grdchkvarindex)
-                 IF (ierr .NE. 0) THEN
-                  IF ( ncvargrd(grdchkvarindex) .EQ. 'c' ) THEN
-                     IF ( maskC(i,j,k,bi,bj) .GT. 0.) THEN
+        print *, 'ph-grd _loc again: m1, icomp, icglo, ierr',
+     &       icglom1, icomp, icglo, ierr, icomptest
+
+               DO j = jwrk, ncvarymax(grdchkvarindex) ! 1,62
+                DO i = iwrk, ncvarxmax(grdchkvarindex) ! 1,62
+                 IF ( ierr.NE.0 ) THEN
+                  IF ( ncvargrd(grdchkvarindex).EQ.'c' ) THEN
+                     IF ( maskC(i,j,k,bi,bj).GT.0. ) THEN
+                        icomptest = icomptest + 1
+                        itmp = i
+                        jtmp = j
+        print *, 'ph-grd _loc: icomptest, k, ij ',
+     &       icomptest,k, itmp, jtmp
+                     ENDIF
+                  ELSEIF ( ncvargrd(grdchkvarindex).EQ.'s' ) THEN
+                     IF ( _maskS(i,j,k,bi,bj).GT.0. ) THEN
                         icomptest = icomptest + 1
                         itmp = i
                         jtmp = j
                      ENDIF
-                  ELSEIF ( ncvargrd(grdchkvarindex) .EQ. 's' ) THEN
-                     IF ( _maskS(i,j,k,bi,bj) .GT. 0.) THEN
-                        icomptest = icomptest + 1
-                        itmp = i
-                        jtmp = j
-                     ENDIF
-                  ELSEIF ( ncvargrd(grdchkvarindex) .EQ. 'w' ) THEN
-                     IF ( _maskW(i,j,k,bi,bj) .GT. 0.) THEN
+                  ELSEIF ( ncvargrd(grdchkvarindex).EQ.'w' ) THEN
+                     IF ( _maskW(i,j,k,bi,bj).GT.0. ) THEN
                         icomptest = icomptest + 1
                         itmp = i
                         jtmp = j
                      ENDIF
 #ifdef ALLOW_SHELFICE
-                  ELSEIF ( ncvargrd(grdchkvarindex) .EQ. 'i' ) THEN
-                     IF ( maskSHI(i,j,k,bi,bj) .GT. 0.) THEN
+                  ELSEIF ( ncvargrd(grdchkvarindex).EQ.'i' ) THEN
+                     IF ( maskSHI(i,j,k,bi,bj).GT.0. ) THEN
                         icomptest = icomptest + 1
                         itmp = i
                         jtmp = j
                      ENDIF
 #endif /* ALLOW_SHELFICE */
 #ifdef ALLOW_OBCS_CONTROL
-                  ELSEIF ( ncvargrd(grdchkvarindex) .EQ. 'm' ) THEN
+                  ELSEIF ( ncvargrd(grdchkvarindex).EQ.'m' ) THEN
                      IF ( ncvarfname(grdchkvarindex)
      &                  .EQ.xx_obcsn_file ) THEN
-#ifdef ALLOW_OBCSN_CONTROL
-                        IF ( grdchk_maskxz(i,k,bi,bj,iobcs) .GT. 0.
-     &                       .AND. j.EQ. OB_Jn(i,bi,bj) ) THEN
+# ifdef ALLOW_OBCSN_CONTROL
+                        IF ( grdchk_maskxz(i,k,bi,bj,iobcs).GT.0.
+     &                       .AND. j.EQ.OB_Jn(i,bi,bj) ) THEN
                            icomptest = icomptest + 1
                            itmp = i
                            jtmp = OB_Jn(i,bi,bj)
                         ENDIF
-#endif
+# endif
                      ELSEIF ( ncvarfname(grdchkvarindex)
      &                       .EQ.xx_obcss_file ) THEN
-#ifdef ALLOW_OBCSS_CONTROL
-                        IF ( grdchk_maskxz(i,k,bi,bj,iobcs) .GT. 0.
-     &                       .AND. j.EQ. OB_Js(i,bi,bj) ) THEN
+# ifdef ALLOW_OBCSS_CONTROL
+                        IF ( grdchk_maskxz(i,k,bi,bj,iobcs).GT.0.
+     &                       .AND. j.EQ.OB_Js(i,bi,bj) ) THEN
                            icomptest = icomptest + 1
                            itmp = i
                            jtmp = OB_Js(i,bi,bj)
                         ENDIF
-#endif
+# endif
                      ELSEIF ( ncvarfname(grdchkvarindex)
      &                       .EQ.xx_obcse_file ) THEN
-#ifdef ALLOW_OBCSE_CONTROL
-                        IF ( grdchk_maskyz(j,k,bi,bj,iobcs) .GT. 0.
-     &                       .AND. i.EQ. OB_Ie(j,bi,bj) ) THEN
+# ifdef ALLOW_OBCSE_CONTROL
+                        IF ( grdchk_maskyz(j,k,bi,bj,iobcs).GT.0.
+     &                       .AND. i.EQ.OB_Ie(j,bi,bj) ) THEN
                            icomptest = icomptest + 1
                            itmp = OB_Ie(j,bi,bj)
                            jtmp = j
                         ENDIF
-#endif
+# endif
                      ELSEIF ( ncvarfname(grdchkvarindex)
      &                       .EQ.xx_obcsw_file ) THEN
-#ifdef ALLOW_OBCSW_CONTROL
-                        IF ( grdchk_maskyz(j,k,bi,bj,iobcs) .GT. 0.
-     &                       .AND. i.EQ. OB_Iw(j,bi,bj) ) THEN
+# ifdef ALLOW_OBCSW_CONTROL
+                        IF ( grdchk_maskyz(j,k,bi,bj,iobcs).GT.0.
+     &                       .AND. i.EQ.OB_Iw(j,bi,bj) ) THEN
                            icomptest = icomptest + 1
                            itmp = OB_Iw(j,bi,bj)
                            jtmp = j
                         ENDIF
-#endif
+# endif
                      ENDIF
 #endif /* ALLOW_OBCS_CONTROL */
                   ENDIF
-cph(
-cph-print                  print *, 'ph-grd icomp, icomptest, icomploc, i, j ',
-cph-print     &                 icomp, icomptest, icomploc, i, j
-cpj)
-                  IF ( icomploc .EQ. icomptest ) THEN
-                     itilepos = itmp
-                     jtilepos = jtmp
-                     layer    = k
-                     obcspos  = iobcs
-                     ierr     = 0
-cph                     itest    = iwetsum(bi,bj,k)
-cph(
-                     print *, 'ph-grd -->hit<-- ', itmp,jtmp,k,iobcs
-                     goto 1234
-cph)
+
+                  IF ( icomploc.EQ.icomptest ) THEN
+                    itilepos = itmp
+                    jtilepos = jtmp
+                    layer    = k
+                    obcspos  = iobcs
+                    ierr     = 0
+                    print *, 'ph-grd -->hit<-- ', itmp,jtmp,k,iobcs
+                    goto 1234
+
                   ENDIF
                  ENDIF
+
                 ENDDO
                 iwrk = 1
                ENDDO
                jwrk = 1
-             ELSEIF (ierr .NE. 0) THEN
-               IF (icomptest .EQ. icomp-1) THEN
+
+             ELSEIF ( ierr.NE.0 ) THEN
+               IF ( icomptest.EQ.icomp-1 ) THEN
                  icomptest = icomptest
+CESCO        print *, 'ph-grd _loc: option 1 icomp, icomptest',
+CESCO     &       icomp, icomptest
                ELSE
-                 icomptest = icomptest + nwettile(bi,bj,k,iobcs)
+CESCO start icomptest at the point before the first i/j/k 1/1/new layer
+                 icomptest = 0
+                 DO kk = 1, k
+CESCO        print *, 'ph-grd _loc: option 2 kk, kwrk, k',
+CESCO     &      kk, kwrk, k 
+                   icomptest = icomptest + nwettile(bi,bj,kk,iobcs)
+                 ENDDO
+CESCO next two lines prevent Seg Fault when k increments
+C                 itmp = 1
+C                 jtmp = 1
+CESCO        print *, 'ph-grd _loc: option 2 icomp, icomptest, ijtmp',
+CESCO     &       icomp, icomptest, itmp, jtmp, itilepos, jtilepos
                ENDIF
-cph(
-cph-print               print *, 'ph-grd after loop icomptest, icomploc, k ',
-cph-print     &              icomptest, icomploc, k
-cph)
+
                iwrk      = 1
                jwrk      = 1
              ENDIF
