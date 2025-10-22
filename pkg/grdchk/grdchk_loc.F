@@ -181,8 +181,8 @@ C If in the correct vertical layer, locate i,j,k
                         icomptest = icomptest + 1
                         itmp = i
                         jtmp = j
-        print *, 'ph-grd _loc: icomptest, k, ij ',
-     &       icomptest,k, itmp, jtmp
+C        print *, 'ph-grd _loc: icomptest, k, ij ',
+C     &       icomptest,k, itmp, jtmp
                      ENDIF
                   ELSEIF ( ncvargrd(grdchkvarindex).EQ.'s' ) THEN
                      IF ( _maskS(i,j,k,bi,bj).GT.0. ) THEN

@@ -208,17 +208,17 @@ C--   forward run with unperturbed control vector
       WRITE(standardMessageUnit,'(A)')
      &    'grad-res -------------------------------'
       CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
-      WRITE(standardMessageUnit,'(2a)')
+      WRITE(standardMessageUnit,'(2A)')
      &    ' grad-res  proc    #    i    j    k   bi   bj iobc',
      &    '       fc ref            fc + eps           fc - eps'
       CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
 #ifdef ALLOW_TANGENTLINEAR_RUN
-      WRITE(standardMessageUnit,'(2a)')
+      WRITE(standardMessageUnit,'(2A)')
      &    ' grad-res  proc    #    i    j    k   bi   bj iobc',
      &    '      tlm grad            fd grad          1 - fd/tlm'
       CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
 #else
-      WRITE(standardMessageUnit,'(2a)')
+      WRITE(standardMessageUnit,'(2A)')
      &    ' grad-res  proc    #    i    j    k   bi   bj iobc',
      &    '      adj grad            fd grad          1 - fd/adj'
       CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
@@ -432,31 +432,34 @@ C******************************************************
 C--   (D): calculate relative differences between gradients
 C******************************************************
 
-          IF ( grdchk_eps .EQ. 0. ) THEN
+          IF ( grdchk_eps.EQ.0. ) THEN
             gfd = (fcpertplus-fcpertminus)
           ELSE
             gfd = (fcpertplus-fcpertminus) /(grdchk_epsfac*grdchk_eps)
+            print *, "ESCO main: fc ", fcpertplus,fcpertminus
+            print *, "ESCO main: fcd", fcpertplus-fcpertminus
+            print *, "ESCO main: gfd", gfd 
           ENDIF
 
-          IF ( adxxmemo .EQ. 0. ) THEN
+          IF ( adxxmemo.EQ.0. ) THEN
             ratio_ad = ABS( adxxmemo - gfd )
           ELSE
             ratio_ad = 1. - gfd/adxxmemo
           ENDIF
 
-          IF ( ftlxxmemo .EQ. 0. ) THEN
+          IF ( ftlxxmemo.EQ.0. ) THEN
             ratio_ftl = ABS( ftlxxmemo - gfd )
           ELSE
             ratio_ftl = 1. - gfd/ftlxxmemo
           ENDIF
 
-          IF ( myProcId .EQ. grdchkwhichproc .AND. ierr .EQ. 0 ) THEN
+          IF ( myProcId.EQ.grdchkwhichproc .AND. ierr.EQ.0 ) THEN
             tmpplot1(itilepos,jtilepos,layer,itile,jtile) = gfd
             tmpplot2(itilepos,jtilepos,layer,itile,jtile) = ratio_ad
             tmpplot3(itilepos,jtilepos,layer,itile,jtile) = ratio_ftl
           ENDIF
 
-          IF ( ierr .EQ. 0 ) THEN
+          IF ( ierr.EQ.0 ) THEN
             fcrmem      ( ichknum ) = fcref
             fcppmem     ( ichknum ) = fcpertplus
             fcpmmem     ( ichknum ) = fcpertminus
@@ -482,7 +485,8 @@ C******************************************************
             icglomem  ( ichknum ) = icglo
           ENDIF
 
-          IF ( myProcId .EQ. grdchkwhichproc .AND. ierr .EQ. 0 ) THEN
+
+          IF ( myProcId.EQ.grdchkwhichproc .AND. ierr.EQ.0 ) THEN
             WRITE(standardMessageUnit,'(A)')
      &          'grad-res -------------------------------'
             WRITE(standardMessageUnit,'(A,8I5,1x,1P3E19.11)')
