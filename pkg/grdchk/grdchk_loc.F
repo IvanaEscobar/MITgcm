@@ -94,10 +94,10 @@ C     initialise parameters
       icglom1 = 0
       icomploc= 0
 
-cph(
-      print *, 'ph-loc:: ichknum, icomp, ncvarcomp, ',
-     &     ichknum, icomp, ncvarcomp
-cph)
+Ccph(
+C      print *, 'ph-loc:: ichknum, icomp, ncvarcomp, ',
+C     &     ichknum, icomp, ncvarcomp
+Ccph)
       IF ( icomp.GT.0 ) THEN
        IF ( icomp.LE.ncvarcomp ) THEN
 C--     A valid component of the control variable has been selected.
@@ -126,10 +126,10 @@ c         iobcswrk  = iobcsmem (ichknum-1)
           iwrk      = iwrk + 1
         ENDIF
 
-      print *, 'ph-loc:: itest,icomptest,irecwrk,icglo ',
-     &     itest,icomptest,irecwrk,icglo
-      print *, 'ph-loc:: i/j/kwrk ',
-     &     iwrk,jwrk,kwrk
+C      print *, 'ph-loc:: itest,icomptest,irecwrk,icglo ',
+C     &     itest,icomptest,irecwrk,icglo
+C      print *, 'ph-loc:: i/j/kwrk ',
+C     &     iwrk,jwrk,kwrk
 C--   set max loop index for obcs multiplicities
         IF ( ncvargrd(grdchkvarindex).EQ.'m' ) THEN
 #ifdef ALLOW_OBCS_CONTROL
@@ -142,10 +142,10 @@ C--   set max loop index for obcs multiplicities
         ENDIF
 
 C--   Start to loop over records.
-        print *, 'ph loc loop limits irec, k, j, i, ncvar',
-     &  ncvarrecs(grdchkvarindex), ncvarnrmax(grdchkvarindex),
-     &  ncvarymax(grdchkvarindex), ncvarxmax(grdchkvarindex),
-     &  ncvargrd(grdchkvarindex), grdchkvarindex
+C        print *, 'ph loc loop limits irec, k, j, i, ncvar',
+C     &  ncvarrecs(grdchkvarindex), ncvarnrmax(grdchkvarindex),
+C     &  ncvarymax(grdchkvarindex), ncvarxmax(grdchkvarindex),
+C     &  ncvargrd(grdchkvarindex), grdchkvarindex
 
         DO irec = irecwrk, ncvarrecs(grdchkvarindex) ! 1,1
          iobcs = MOD((irec-1),nobcsmax) + 1
@@ -157,8 +157,8 @@ C--   Start to loop over records.
              icglo   = icglo + nwettile(bi,bj,k,iobcs)
              icglom1 = icglo - nwettile(bi,bj,k,iobcs)
 
-        print *, 'ph-grd _loc: m1, icomp, icglo, ierr',
-     &       icglom1, icomp, icglo, ierr, icomptest
+C        print *, 'ph-grd _loc: m1, icomp, icglo, ierr',
+C     &       icglom1, icomp, icglo, ierr, icomptest
 C If in the correct vertical layer, locate i,j,k
              IF ( (ierr.NE.0) .AND.
      &            (icomp.GT.icglom1 .AND. icomp.LE.icglo) ) THEN
@@ -170,8 +170,6 @@ C If in the correct vertical layer, locate i,j,k
                icvrec = irec
                itile  = bi
                jtile  = bj
-        print *, 'ph-grd _loc again: m1, icomp, icglo, ierr',
-     &       icglom1, icomp, icglo, ierr, icomptest
 
                DO j = jwrk, ncvarymax(grdchkvarindex) ! 1,62
                 DO i = iwrk, ncvarxmax(grdchkvarindex) ! 1,62
@@ -270,21 +268,12 @@ C     &       icomptest,k, itmp, jtmp
              ELSEIF ( ierr.NE.0 ) THEN
                IF ( icomptest.EQ.icomp-1 ) THEN
                  icomptest = icomptest
-CESCO        print *, 'ph-grd _loc: option 1 icomp, icomptest',
-CESCO     &       icomp, icomptest
                ELSE
 CESCO start icomptest at the point before the first i/j/k 1/1/new layer
                  icomptest = 0
                  DO kk = 1, k
-CESCO        print *, 'ph-grd _loc: option 2 kk, kwrk, k',
-CESCO     &      kk, kwrk, k 
                    icomptest = icomptest + nwettile(bi,bj,kk,iobcs)
                  ENDDO
-CESCO next two lines prevent Seg Fault when k increments
-C                 itmp = 1
-C                 jtmp = 1
-CESCO        print *, 'ph-grd _loc: option 2 icomp, icomptest, ijtmp',
-CESCO     &       icomp, icomptest, itmp, jtmp, itilepos, jtilepos
                ENDIF
 
                iwrk      = 1

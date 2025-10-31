@@ -241,8 +241,6 @@ C--   gradient checks.
      &                                         ' (=ichknum) ======='
           CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
           WRITE(msgBuf,'(A,4I8)')
-     &      'ESCO icomp, nbeg, nend, nstep ',icomp,nbeg,nend,nstep
-          CALL PRINT_MESSAGE( msgBuf, ioUnit, SQUEEZE_RIGHT, myThid )
 
 C--       Determine the location of icomp on the grid.
           IF ( myProcId .EQ. grdchkwhichproc ) THEN
@@ -436,9 +434,6 @@ C******************************************************
             gfd = (fcpertplus-fcpertminus)
           ELSE
             gfd = (fcpertplus-fcpertminus) /(grdchk_epsfac*grdchk_eps)
-            print *, "ESCO main: fc ", fcpertplus,fcpertminus
-            print *, "ESCO main: fcd", fcpertplus-fcpertminus
-            print *, "ESCO main: gfd", gfd 
           ENDIF
 
           IF ( adxxmemo.EQ.0. ) THEN
