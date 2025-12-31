@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/ECCO_OPTIONS.h
+/work2/05427/iescobar/ihop/mitgcm_code/ECCO_OPTIONS.h

@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/do_statevars_diags.F
+/work2/05427/iescobar/ihop/mitgcm_code/do_statevars_diags.F

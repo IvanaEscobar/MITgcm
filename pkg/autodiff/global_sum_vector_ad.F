@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/ad/global_sum_vector_ad.F
+/work2/05427/iescobar/ihop/mitgcm_code/ad/global_sum_vector_ad.F

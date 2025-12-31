@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/cost_final.F
+/work2/05427/iescobar/ihop/mitgcm_code/cost_final.F

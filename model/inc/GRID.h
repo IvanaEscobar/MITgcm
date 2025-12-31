@@ -1,1 +1,0 @@
-/home/ivana/ihop/mitgcm_code/GRID.h

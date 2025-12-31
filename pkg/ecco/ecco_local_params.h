@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/ecco_local_params.h
+/work2/05427/iescobar/ihop/mitgcm_code/ecco_local_params.h

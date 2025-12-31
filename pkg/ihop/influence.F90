@@ -1,1 +1,1 @@
-/home/ivana/ihop/src/influence.F90
+/work2/05427/iescobar/ihop/src/influence.F90

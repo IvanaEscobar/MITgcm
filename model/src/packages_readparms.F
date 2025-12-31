@@ -1,1 +1,1 @@
-/home/ivana/ihop/mitgcm_code/packages_readparms.F
+/work2/05427/iescobar/ihop/mitgcm_code/packages_readparms.F

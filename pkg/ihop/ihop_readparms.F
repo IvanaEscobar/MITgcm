@@ -1,1 +1,1 @@
-/home/ivana/ihop/src/ihop_readparms.F
+/work2/05427/iescobar/ihop/src/ihop_readparms.F
